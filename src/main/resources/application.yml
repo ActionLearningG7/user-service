@@ -1,12 +1,12 @@
 spring:
   application:
-    name: user-service
+    name: ${SPRING_APPLICATION_NAME}
 
   datasource:
-    url: jdbc:mysql://localhost:3306/medibridge_userdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    username: root
-    password: Prakash@1
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER}
 
   jpa:
     hibernate:
@@ -14,17 +14,16 @@ spring:
     show-sql: true
 
 server:
-  port: 8081
-
+  port: ${SERVER_PORT}
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVER_URL}
     register-with-eureka: true
     fetch-registry: true
 
   instance:
-    prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 10
-    lease-expiration-duration-in-seconds: 30
+    prefer-ip-address: ${PREFER_IP_ADDRESS}
+    lease-renewal-interval-in-seconds: ${LEASE_RENEWAL_INTERVAL}
+    lease-expiration-duration-in-seconds: ${LEASE_EXPIRATION_DURATION}
