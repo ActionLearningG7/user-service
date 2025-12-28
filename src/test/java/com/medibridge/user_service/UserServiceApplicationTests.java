@@ -1,4 +1,4 @@
-package com.groove.user_service;
+package com.medibridge.user_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

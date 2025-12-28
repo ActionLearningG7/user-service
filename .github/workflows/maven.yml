@@ -1,0 +1,63 @@
+name: Build and Deploy User Service
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  DOCKER_IMAGE: omprakash07/user-service
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.DOCKER_IMAGE }}:latest
+            ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+
+      - name: Run Docker container with env variables
+        run: |
+          docker run -d \
+            --name groove-user-service \
+            -p 8081:8081 \
+            -e DATASOURCE_URL="${{ secrets.DATASOURCE_URL }}" \
+            -e DATABASE_USER="${{ secrets.DATABASE_USER }}" \
+            -e DATABASE_PASSWORD="${{ secrets.DATABASE_PASSWORD }}" \
+            -e JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" \
+            -e JWT_EXPIRATION_MS="${{ secrets.JWT_EXPIRATION_MS }}" \
+            -e SERVER_PORT="${{ secrets.SERVER_PORT }}" \
+            -e APPLICATION_NAME="${{ secrets.APPLICATION_NAME }}" \
+            -e DB_DRIVER="${{ secrets.DB_DRIVER }}" \
+            -e EUREKA_SERVER_URL="${{ secrets.EUREKA_SERVER_URL }}" \
+            -e LEASE_RENEWAL_INTERVAL="${{ secrets.LEASE_RENEWAL_INTERVAL }}" \
+            -e LEASE_EXPIRATION_DURATION="${{ secrets.LEASE_EXPIRATION_DURATION }}" \
+            -e PREFER_IP_ADDRESS="${{ secrets.PREFER_IP_ADDRESS }}" \
+            --restart unless-stopped \
+            ${{ env.DOCKER_IMAGE }}:latest
