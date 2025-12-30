@@ -45,7 +45,7 @@ jobs:
       - name: Run Docker container with env variables
         run: |
           docker run -d \
-            --name groove-user-service \
+            --name medibridge-user-service \
             -p 8081:8081 \
             -e DATASOURCE_URL="${{ secrets.DATASOURCE_URL }}" \
             -e DATABASE_USER="${{ secrets.DATABASE_USER }}" \
