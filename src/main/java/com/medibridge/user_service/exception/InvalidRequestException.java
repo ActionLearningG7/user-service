@@ -10,14 +10,14 @@ public class InvalidRequestException extends MediBridgeException {
     private static final long serialVersionUID = 1L;
 
     public InvalidRequestException(String message) {
-        super(message, HttpStatus.BAD_REQUEST.value(), "INVALID_REQUEST");
+        super(message, "INVALID_REQUEST", HttpStatus.BAD_REQUEST.value());
     }
 
     public InvalidRequestException(String fieldName, String message) {
         super(
             String.format("Invalid request: %s - %s", fieldName, message),
-            HttpStatus.BAD_REQUEST.value(),
-            "INVALID_REQUEST"
+            "INVALID_REQUEST",
+            HttpStatus.BAD_REQUEST.value()
         );
     }
 }

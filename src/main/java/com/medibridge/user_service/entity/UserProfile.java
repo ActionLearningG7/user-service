@@ -2,6 +2,7 @@ package com.medibridge.user_service.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -33,9 +34,11 @@ public abstract class UserProfile {
     private String additionalInfo; // JSON field for future extensibility
 
     @Column(name = "created_at", nullable = false, updatable = false)
+    @Builder.Default
     private Long createdAt = System.currentTimeMillis();
 
     @Column(name = "updated_at")
+    @Builder.Default
     private Long updatedAt = System.currentTimeMillis();
 
     @PreUpdate

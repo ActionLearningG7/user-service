@@ -10,7 +10,7 @@ public class AuthenticationException extends MediBridgeException {
     private static final long serialVersionUID = 1L;
 
     public AuthenticationException(String message) {
-        super(message, HttpStatus.UNAUTHORIZED.value(), "AUTHENTICATION_FAILED");
+        super(message, "AUTHENTICATION_FAILED", HttpStatus.UNAUTHORIZED.value());
     }
 
     /**

@@ -26,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -56,7 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .fullName(request.getFullName() != null ? request.getFullName() : request.getUsername())
                 .phoneNumber(request.getPhoneNumber())
                 .isActive(true)
-                .createdAt(System.currentTimeMillis())
+                .createdAt(LocalDateTime.now())
                 .build();
 
         user = repository.save(user);
@@ -86,8 +88,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         user.setProfile(profile);
-        user.setCreatedAt(System.currentTimeMillis());
-        user.setUpdatedAt(System.currentTimeMillis());
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         user = repository.save(user);
 
         // Generate tokens

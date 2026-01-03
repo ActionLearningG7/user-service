@@ -19,7 +19,6 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
 
-    private boolean success = false;
     private String errorCode;
     private String message;
     private int status;
@@ -27,6 +26,9 @@ public class ErrorResponse {
     private LocalDateTime timestamp;
     private Map<String, String> fieldErrors;
     private String stackTrace;
+
+    @Builder.Default
+    private boolean success = false;
 
     public static ErrorResponse of(String errorCode, String message, int status, String path) {
         return ErrorResponse.builder()

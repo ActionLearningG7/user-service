@@ -29,5 +29,5 @@ public class RegisterRequest {
     private String phoneNumber;
 
     @lombok.Builder.Default
-    private Role role = Role.ADMIN;
+    private Role role = Role.PATIENT;
 }

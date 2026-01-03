@@ -1,32 +1,32 @@
 package com.medibridge.user_service.exception;
 
 /**
- * Base custom exception for MediBridge User Service.
+ * Base exception for all MediBridge application exceptions.
+ * Provides hierarchical exception handling across the system.
  */
-public class MediBridgeException extends RuntimeException {
+public abstract class MediBridgeException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
-    private final int httpStatus;
     private final String errorCode;
+    private final int httpStatus;
 
-    public MediBridgeException(String message, int httpStatus, String errorCode) {
+    public MediBridgeException(String message, String errorCode, int httpStatus) {
         super(message);
-        this.httpStatus = httpStatus;
         this.errorCode = errorCode;
+        this.httpStatus = httpStatus;
     }
 
-    public MediBridgeException(String message, Throwable cause, int httpStatus, String errorCode) {
+    public MediBridgeException(String message, String errorCode, int httpStatus, Throwable cause) {
         super(message, cause);
-        this.httpStatus = httpStatus;
         this.errorCode = errorCode;
-    }
-
-    public int getHttpStatus() {
-        return httpStatus;
+        this.httpStatus = httpStatus;
     }
 
     public String getErrorCode() {
         return errorCode;
+    }
+
+    public int getHttpStatus() {
+        return httpStatus;
     }
 }
 
