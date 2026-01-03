@@ -2,12 +2,12 @@ name: Build and Deploy User Service
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "dev", "test" ]
   pull_request:
     branches: [ "main" ]
 
 env:
-  DOCKER_IMAGE: omprakash07/user-service
+  DOCKER_IMAGE: omprakash07/reservation-service
 
 jobs:
   build-and-push:
@@ -45,7 +45,7 @@ jobs:
       - name: Run Docker container with env variables
         run: |
           docker run -d \
-            --name groove-user-service \
+            --name medibridge-reservation-service \
             -p 8081:8081 \
             -e DATASOURCE_URL="${{ secrets.DATASOURCE_URL }}" \
             -e DATABASE_USER="${{ secrets.DATABASE_USER }}" \

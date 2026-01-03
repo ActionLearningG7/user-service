@@ -1,12 +1,15 @@
 spring:
   application:
-    name: ${SPRING_APPLICATION_NAME}
+    name: user-service
+
+  profiles:
+    active:
 
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: ${DB_DRIVER}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/medibridge_userdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:Prakash@1}
+    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
 
   jpa:
     hibernate:
@@ -14,16 +17,69 @@ spring:
     show-sql: true
 
 server:
-  port: ${SERVER_PORT}
+  port: ${SERVER_PORT:8081}
 
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_SERVER_URL}
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
     register-with-eureka: true
     fetch-registry: true
 
   instance:
-    prefer-ip-address: ${PREFER_IP_ADDRESS}
-    lease-renewal-interval-in-seconds: ${LEASE_RENEWAL_INTERVAL}
-    lease-expiration-duration-in-seconds: ${LEASE_EXPIRATION_DURATION}
+    prefer-ip-address: ${PREFER_IP_ADDRESS:true}
+    lease-renewal-interval-in-seconds: ${LEASE_RENEWAL_INTERVAL:30}
+    lease-expiration-duration-in-seconds: ${LEASE_EXPIRATION_DURATION:90}
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      expiration: ${JWT_EXPIRATION_MS:900000}
+      refresh-token:
+        expiration: ${JWT_REFRESH_EXPIRATION_MS:604800000} # 7 days
+
+  error:
+    include-stack-trace: ${INCLUDE_STACK_TRACE:false} # Include stack trace in error responses (dev only)
+    max-password-attempts: 5 # Max failed login attempts before locking
+    account-lock-duration-minutes: 30 # Account lock duration in minutes
+
+logging:
+  level:
+    com.medibridge.user_service: DEBUG
+    org.springframework.security: INFO
+    org.springframework.web: INFO
+    org.springframework.data: WARN
+    org.hibernate: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%X{correlationId}] - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%X{correlationId}] - %msg%n"
+  file:
+    name: logs/user-service.log
+    max-size: 10MB
+    max-history: 30
+    total-size-cap: 1GB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+  health:
+    db:
+      enabled: true
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+  simple:
+    metrics:
+      export:
+        enabled: true
+
+
+

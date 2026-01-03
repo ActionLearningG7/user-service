@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: reservation-service
+
+  datasource:
+    url: jdbc:mysql://${MYSQLHOST:${DB_HOST}}:${MYSQLPORT}/${MYSQLDATABASE}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+
+    username: ${MYSQLUSER}
+    password: ${MYSQLPASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: ${MYSQLPORT}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    prefer-ip-address: ${PREFER_IP_ADDRESS}
+    lease-renewal-interval-in-seconds: ${LEASE_RENEWAL_INTERVAL}
+    lease-expiration-duration-in-seconds: ${LEASE_EXPIRATION_DURATION}
+
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000 # 24 hours
+      refresh-token:
+        expiration: 604800000 # 7 days
+
+  error:
+    max-password-attempts: 5 # Max failed login attempts before locking
+    account-lock-duration-minutes: 30 # Account lock duration in minutes
+
+logging:
+  level:
+    com.medibridge.user_service: INFO
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/user-service.log
+    max-size: 10MB
+    max-history: 30
+    total-size-cap: 1GB
+
