@@ -1,12 +1,10 @@
-package com.medibridge.user_service.mapper;
+package com.medibridge.user_service.Mapper;
 
-import com.medibridge.user_service.dto.response.UserResponseDTO;
 import com.medibridge.user_service.dto.response.UserProfileDTO;
-import com.medibridge.user_service.entity.Role;
+import com.medibridge.user_service.dto.response.UserResponseDTO;
 import com.medibridge.user_service.entity.User;
 import com.medibridge.user_service.entity.UserProfile;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 /**
@@ -17,33 +15,55 @@ import org.mapstruct.MappingConstants;
 public interface UserMapper {
 
     /**
-     * Map User entity to UserResponseDTO
-     * Converts Role enum to String for API response
+     * Map User entity to UserResponseDTO manually
      */
-    @Mapping(target = "role", expression = "java(user.getRole() != null ? user.getRole().name() : null)")
-    UserResponseDTO userToUserResponseDTO(User user);
+    default UserResponseDTO userToUserResponseDTO(User user) {
+        if (user == null) {
+            return null;
+        }
+
+        UserResponseDTO dto = UserResponseDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .fullName(user.getFullName())
+                .phoneNumber(user.getPhoneNumber())
+                .role(user.getRole() != null ? user.getRole() : null)
+                .isActive(user.getIsActive())
+                .isLocked(user.getIsLocked())
+                .lastLoginAt(user.getLastLoginAt())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .build();
+
+        if (user.getProfile() != null) {
+            dto.setProfile(userProfileToUserProfileDTO(user.getProfile()));
+        }
+
+        return dto;
+    }
 
     /**
      * Map UserProfile entity to UserProfileDTO
      */
-    UserProfileDTO userProfileToUserProfileDTO(UserProfile userProfile);
+    default UserProfileDTO userProfileToUserProfileDTO(UserProfile userProfile) {
+        if (userProfile == null) {
+            return null;
+        }
+
+        return UserProfileDTO.builder()
+                .id(userProfile.getId())
+                .userId(userProfile.getUser() != null ? userProfile.getUser().getId() : null)
+                .createdAt(userProfile.getCreatedAt())
+                .updatedAt(userProfile.getUpdatedAt())
+                .build();
+    }
 
     /**
      * Map User to UserResponseDTO with profile
      */
     default UserResponseDTO userWithProfileToDTO(User user) {
-        UserResponseDTO dto = userToUserResponseDTO(user);
-        if (user.getProfile() != null) {
-            dto.setProfile(userProfileToUserProfileDTO(user.getProfile()));
-        }
-        return dto;
-    }
-
-    /**
-     * Convert Role enum to String
-     */
-    default String roleToString(Role role) {
-        return role != null ? role.name() : null;
+        return userToUserResponseDTO(user);
     }
 }
 

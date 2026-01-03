@@ -205,7 +205,7 @@ public class AdminController {
                     .email(doctor.getEmail())
                     .fullName(doctor.getFullName())
                     .phoneNumber(doctor.getPhoneNumber())
-                    .role(doctor.getRole().name())
+                    .role(doctor.getRole())
                     .isActive(doctor.getIsActive())
                     .isLocked(doctor.getIsLocked())
                     .createdAt(doctor.getCreatedAt())

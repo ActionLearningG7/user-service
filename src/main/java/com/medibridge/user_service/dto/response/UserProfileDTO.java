@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -31,5 +32,7 @@ public class UserProfileDTO implements Serializable {
     private String profilePhotoUrl;
     private String status;
     private Boolean isVerified;
+    private Long createdAt;
+    private Long updatedAt;
 }
 

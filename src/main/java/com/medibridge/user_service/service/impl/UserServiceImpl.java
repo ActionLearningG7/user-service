@@ -1,11 +1,12 @@
 package com.medibridge.user_service.service.impl;
 
+import com.medibridge.user_service.Mapper.UserMapper;
 import com.medibridge.user_service.dto.request.UserRegistrationRequest;
 import com.medibridge.user_service.dto.response.UserResponseDTO;
 import com.medibridge.user_service.entity.User;
+
 import com.medibridge.user_service.exception.UserAlreadyExistsException;
 import com.medibridge.user_service.exception.UserNotFoundException;
-import com.medibridge.user_service.mapper.UserMapper;
 import com.medibridge.user_service.repository.UserRepository;
 import com.medibridge.user_service.service.UserService;
 import lombok.RequiredArgsConstructor;

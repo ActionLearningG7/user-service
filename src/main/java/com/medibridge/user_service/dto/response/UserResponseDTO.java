@@ -1,6 +1,7 @@
 package com.medibridge.user_service.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.medibridge.user_service.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,7 +51,7 @@ public class UserResponseDTO implements Serializable {
     /**
      * User role
      */
-    private String role;
+    private Role role;
 
     /**
      * Account active status
